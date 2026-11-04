@@ -5,89 +5,452 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090711">
-<title>Companions | WARZONE LEGENDS</title>
+<title>3D Companions | WARZONE LEGENDS</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#090711;color:white;font-family:Arial,sans-serif}
 header{padding:20px;background:#171225;border-bottom:1px solid #50346e}
 header a{color:#c99aff;text-decoration:none;font-size:13px}
-h1{font-size:27px;margin-top:18px}
-header p{color:#b8a9c8;font-size:13px;margin-top:8px}
-main{padding:18px;max-width:800px;margin:auto}
-.intro{padding:17px;background:#20162e;border:1px solid #51376b;border-radius:12px;margin-bottom:20px}
-.intro p{font-size:13px;color:#c6b8d4;line-height:1.6}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.card{overflow:hidden;background:#191326;border:1px solid #443052;border-radius:13px}
-.art{height:145px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at center,#69428e,#21152f 70%)}
-.art svg{width:115px;height:115px}
-.info{padding:13px}
-.info h2{font-size:16px}
-.type{color:#c895ff;font-size:10px;letter-spacing:1px;margin:7px 0}
-.info p{font-size:11px;color:#bcb0ca;line-height:1.5;min-height:34px}
-.status{display:block;margin-top:10px;color:#d7b6f6;font-size:10px}
-.note{color:#a99bb8;font-size:11px;line-height:1.5;margin-top:20px}
+header h1{font-size:26px;margin-top:17px}
+header p{color:#b8a9c8;font-size:12px;margin-top:8px}
+main{padding:17px;max-width:850px;margin:auto}
+.viewer{height:340px;position:relative;overflow:hidden;border:1px solid #68458a;border-radius:15px;background:radial-gradient(ellipse at center,#352348,#100c19 75%)}
+#petCanvas{width:100%;height:100%;display:block;touch-action:none}
+.label{position:absolute;top:14px;left:14px;color:#d8b5ff;font-size:10px;letter-spacing:2px;pointer-events:none}
+.help{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#c0b0d0;font-size:11px;pointer-events:none}
+.info{padding:18px 2px}
+.info h2{font-size:23px}
+.type{color:#c28aff;font-size:11px;letter-spacing:2px;margin-top:7px}
+.description{color:#bcb0ca;font-size:13px;line-height:1.5;margin-top:10px}
+.title{font-size:16px;margin:18px 0 12px}
+.pet-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.pet-option{padding:13px 5px;background:#191326;border:1px solid #443052;border-radius:10px;color:white;text-align:center}
+.pet-option.active{border:1px solid #c28aff;background:#30203f}
+.pet-option span{display:block;font-size:22px;margin-bottom:8px}
+.pet-option strong{font-size:11px}
+.controls{display:flex;gap:10px;margin-top:17px}
+.controls button{flex:1;padding:13px 7px;border:1px solid #8b5caf;border-radius:8px;background:#281a38;color:white;font-weight:bold}
+.note{margin:18px 0;color:#a99bb8;font-size:11px;line-height:1.6}
+@media(max-width:400px){.viewer{height:290px}}
 </style>
 </head>
+
 <body>
 <header>
 <a href="lobby.html">← BACK TO LOBBY</a>
-<h1>LEGEND COMPANIONS</h1>
-<p>Discover the creatures of the battlefield.</p>
+<h1>3D COMPANIONS</h1>
+<p>Meet the creatures who accompany the Legends.</p>
 </header>
 
 <main>
-<div class="intro">
-<p>Every companion will eventually have its own 3D model, personality, animations and special cosmetic effects. These are original companion concepts.</p>
+<div class="viewer">
+<div class="label">3D COMPANION VIEWER</div>
+<div id="petCanvas"></div>
+<div class="help">DRAG TO ROTATE · PINCH TO ZOOM</div>
 </div>
-<div class="grid" id="petGrid"></div>
-<p class="note">Companion abilities and gameplay effects are not active yet.</p>
+
+<div class="info">
+<h2 id="petName">BOLT</h2>
+<div class="type" id="petType">STORM WOLF</div>
+<p class="description" id="petDescription">A powerful mechanical wolf with reinforced armor and glowing energy details.</p>
+</div>
+
+<h3 class="title">CHOOSE YOUR COMPANION</h3>
+<div class="pet-list" id="petList"></div>
+
+<div class="controls">
+<button onclick="resetView()">RESET VIEW</button>
+<button onclick="toggleRotation()" id="rotateButton">AUTO ROTATE: OFF</button>
+</div>
+
+<p class="note">
+These companions are procedurally constructed 3D prototypes. Their detailed sculpting, textures, rigging, walking animations and gameplay abilities will be developed in later stages.
+</p>
 </main>
 
-<script>
-const pets=[
-["Aero","SKY HAWK","A futuristic aerial companion.","hawk"],
-["Frost","ICE FOX","A mysterious arctic companion.","fox"],
-["Bolt","STORM WOLF","A powerful-looking robotic wolf.","wolf"],
-["Ember","FIRE LIZARD","A glowing volcanic creature.","lizard"],
-["Shadow","NIGHT CAT","A quiet shadow companion.","cat"],
-["Titan","IRON BEAR","A heavily armored companion.","bear"],
-["Nova","STAR OWL","A cosmic-inspired flying companion.","owl"],
-["Drift","DESERT JACKAL","A desert-themed companion.","jackal"],
-["Pearl","OCEAN TURTLE","A marine-inspired companion.","turtle"],
-["Spark","ENERGY RABBIT","A fast futuristic creature.","rabbit"],
-["Raven","DARK RAVEN","A mysterious flying companion.","raven"],
-["Moss","FOREST FOX","A woodland-inspired companion.","forest"]
-];
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
-function animalArt(){
-return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="fur" x1="0" y1="0" x2="1" y2="1">
-<stop offset="0" stop-color="#d6b4ff"/>
-<stop offset="1" stop-color="#533575"/>
-</linearGradient>
-</defs>
-<path d="M27 40 L17 10 L43 28 Q60 19 77 28 L103 10 L93 48 Q105 75 83 96 Q60 113 37 96 Q15 75 27 40Z" fill="url(#fur)" stroke="#e4caff" stroke-width="2"/>
-<path d="M25 31 L20 17 L40 33 M95 31 L100 17 L80 33" fill="#38234e"/>
-<path d="M36 58 Q45 50 53 59 M67 59 Q76 50 84 58" stroke="#110c19" stroke-width="5" stroke-linecap="round"/>
-<path d="M53 76 Q60 82 67 76" fill="none" stroke="#21132d" stroke-width="3"/>
-<path d="M60 32 L60 20" stroke="#e3c7ff" stroke-width="3"/>
-<circle cx="60" cy="17" r="5" fill="#c58aff"/>
-<path d="M30 91 L16 106 M90 91 L104 106" stroke="#b58ae0" stroke-width="5" stroke-linecap="round"/>
-</svg>`;
+const container=document.getElementById('petCanvas');
+
+const scene=new THREE.Scene();
+
+const camera=new THREE.PerspectiveCamera(
+38,
+container.clientWidth/container.clientHeight,
+0.1,
+100
+);
+camera.position.set(4,3,6);
+camera.lookAt(0,0.3,0);
+
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
+renderer.setSize(container.clientWidth,container.clientHeight);
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.15;
+container.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xe4d6ff,0x21132c,2));
+
+const keyLight=new THREE.DirectionalLight(0xffffff,3);
+keyLight.position.set(3,6,5);
+scene.add(keyLight);
+
+const purpleLight=new THREE.PointLight(0xb66dff,35,15);
+purpleLight.position.set(-2,2,2);
+scene.add(purpleLight);
+
+const blueLight=new THREE.PointLight(0x46bfff,20,12);
+blueLight.position.set(2,1,-3);
+scene.add(blueLight);
+
+const floor=new THREE.Mesh(
+new THREE.CircleGeometry(3.5,48),
+new THREE.MeshStandardMaterial({
+color:0x21172e,metalness:0.5,roughness:0.75
+})
+);
+floor.rotation.x=-Math.PI/2;
+floor.position.y=-0.03;
+scene.add(floor);
+
+const grid=new THREE.GridHelper(8,20,0x70469a,0x38254b);
+grid.position.y=-0.02;
+scene.add(grid);
+
+const petGroup=new THREE.Group();
+scene.add(petGroup);
+
+const material=(color,metalness=0.2,roughness=0.5,emissive=0)=>{
+return new THREE.MeshStandardMaterial({
+color,metalness,roughness,emissive,emissiveIntensity:1.5
+});
+};
+
+const dark=material(0x171421,0.7,0.35);
+const silver=material(0xb7a9c9,0.85,0.25);
+const eyeMat=material(0xc58aff,0.2,0.2,0x8d38ff);
+
+function ellipsoid(parent,x,y,z,sx,sy,sz,mat){
+const mesh=new THREE.Mesh(
+new THREE.SphereGeometry(1,20,16),mat
+);
+mesh.position.set(x,y,z);
+mesh.scale.set(sx,sy,sz);
+parent.add(mesh);
+return mesh;
 }
 
-document.getElementById("petGrid").innerHTML=pets.map(p=>`
-<div class="card">
-<div class="art">${animalArt()}</div>
-<div class="info">
-<h2>${p[0]}</h2>
-<div class="type">${p[1]}</div>
-<p>${p[2]}</p>
-<span class="status">3D COMPANION CONCEPT</span>
-</div>
-</div>
-`).join("");
+function box(parent,x,y,z,sx,sy,sz,mat){
+const mesh=new THREE.Mesh(
+new THREE.BoxGeometry(sx,sy,sz),mat
+);
+mesh.position.set(x,y,z);
+parent.add(mesh);
+return mesh;
+}
+
+function cone(parent,x,y,z,radius,height,mat,rotation=0){
+const mesh=new THREE.Mesh(
+new THREE.ConeGeometry(radius,height,12),mat
+);
+mesh.position.set(x,y,z);
+mesh.rotation.z=rotation;
+parent.add(mesh);
+return mesh;
+}
+
+function limb(parent,x,y,z,length,mat){
+const mesh=new THREE.Mesh(
+new THREE.CylinderGeometry(0.09,0.11,length,12),mat
+);
+mesh.position.set(x,y,z);
+parent.add(mesh);
+return mesh;
+}
+
+function makeWolf(color){
+const fur=material(color,0.25,0.55);
+const armor=material(0x383047,0.8,0.3);
+const model=new THREE.Group();
+
+// Body and chest
+ellipsoid(model,0,0.75,0,0.85,0.43,0.38,fur);
+ellipsoid(model,0.63,0.85,0,0.38,0.48,0.39,armor);
+
+// Neck and head
+ellipsoid(model,0.72,1.15,0,0.38,0.4,0.34,fur);
+ellipsoid(model,1.0,1.08,0,0.32,0.25,0.29,fur);
+ellipsoid(model,1.25,1.0,0,0.18,0.13,0.19,dark);
+
+// Ears
+cone(model,0.58,1.58,0.20,0.16,0.42,fur,-0.15);
+cone(model,0.58,1.58,-0.20,0.16,0.42,fur,-0.15);
+
+// Eyes
+ellipsoid(model,1.06,1.22,0.25,0.055,0.055,0.035,eyeMat);
+ellipsoid(model,1.06,1.22,-0.25,0.055,0.055,0.035,eyeMat);
+
+// Four legs
+for(const x of [-0.55,0.52]){
+for(const z of [-0.23,0.23]){
+limb(model,x,0.34,z,0.58,armor);
+ellipsoid(model,x,0.06,z+0.01,0.19,0.10,0.15,dark);
+}
+}
+
+// Tail
+const tail=ellipsoid(model,-0.93,1.02,0,0.42,0.13,0.15,fur);
+tail.rotation.z=-0.5;
+
+// Armor plates
+box(model,0,1.12,0,0.62,0.12,0.62,silver);
+ellipsoid(model,0.1,1.19,0,0.20,0.08,0.20,eyeMat);
+
+return model;
+}
+
+function makeFox(color){
+const model=makeWolf(color);
+model.scale.set(0.85,0.85,0.85);
+return model;
+}
+
+function makeBird(color){
+const feathers=material(color,0.35,0.45);
+const wingMat=material(0x413052,0.65,0.35);
+const model=new THREE.Group();
+
+ellipsoid(model,0,0.7,0,0.38,0.55,0.31,feathers);
+ellipsoid(model,0.15,1.23,0,0.3,0.3,0.28,feathers);
+cone(model,0.43,1.17,0,0.12,0.4,material(0xd8a34b),Math.PI/2);
+
+for(const side of [-1,1]){
+const wing=ellipsoid(model,-0.02,0.85,side*0.37,0.18,0.5,0.4,wingMat);
+wing.rotation.x=side*0.25;
+ellipsoid(model,0.25,1.3,side*0.22,0.045,0.06,0.035,eyeMat);
+}
+
+for(let i=0;i<3;i++){
+const feather=ellipsoid(model,-0.38-i*0.09,0.45,-0.02,0.12,0.27,0.08,feathers);
+feather.rotation.z=0.5;
+}
+return model;
+}
+
+function makeTurtle(color){
+const shell=material(0x315f58,0.65,0.35);
+const skin=material(color,0.2,0.65);
+const model=new THREE.Group();
+
+ellipsoid(model,0,0.48,0,0.72,0.32,0.57,shell);
+ellipsoid(model,0,0.67,0,0.62,0.25,0.49,material(0x9271a7,0.65,0.3));
+
+ellipsoid(model,0.73,0.48,0,0.27,0.24,0.23,skin);
+ellipsoid(model,0.94,0.53,0.16,0.045,0.05,0.04,eyeMat);
+ellipsoid(model,0.94,0.53,-0.16,0.045,0.05,0.04,eyeMat);
+
+for(const x of [-0.45,0.45]){
+for(const z of [-0.35,0.35]){
+ellipsoid(model,x,0.16,z,0.20,0.18,0.18,skin);
+}
+}
+return model;
+}
+
+function makeRabbit(color){
+const fur=material(color,0.2,0.6);
+const model=new THREE.Group();
+
+ellipsoid(model,-0.1,0.58,0,0.48,0.42,0.34,fur);
+ellipsoid(model,0.35,0.95,0,0.32,0.32,0.29,fur);
+
+const ear1=ellipsoid(model,0.22,1.45,0.17,0.11,0.43,0.12,fur);
+ear1.rotation.z=-0.18;
+const ear2=ellipsoid(model,0.48,1.45,-0.17,0.11,0.43,0.12,fur);
+ear2.rotation.z=0.18;
+
+ellipsoid(model,0.51,1.0,0.25,0.045,0.05,0.035,eyeMat);
+ellipsoid(model,0.51,1.0,-0.25,0.045,0.05,0.035,eyeMat);
+ellipsoid(model,-0.55,0.55,0,0.16,0.16,0.16,silver);
+
+return model;
+}
+
+function makeBear(color){
+const fur=material(color,0.3,0.6);
+const model=new THREE.Group();
+
+ellipsoid(model,0,0.72,0,0.65,0.65,0.48,fur);
+ellipsoid(model,0.52,1.18,0,0.42,0.42,0.38,fur);
+ellipsoid(model,0.83,1.03,0,0.22,0.17,0.23,dark);
+
+for(const z of [-0.3,0.3]){
+ellipsoid(model,0.28,1.55,z,0.13,0.14,0.12,fur);
+ellipsoid(model,0.65,1.25,z*0.85,0.045,0.05,0.04,eyeMat);
+}
+
+for(const x of [-0.42,0.42]){
+for(const z of [-0.3,0.3]){
+limb(model,x,0.25,z,0.55,fur);
+}
+}
+return model;
+}
+
+const pets=[
+{name:"BOLT",type:"STORM WOLF",desc:"A powerful mechanical wolf with reinforced armor and glowing energy details.",kind:"wolf",color:0x706080},
+{name:"AERO",type:"SKY HAWK",desc:"A futuristic aerial companion with wide wings and a sharp silhouette.",kind:"bird",color:0x8c91b0},
+{name:"FROST",type:"ICE FOX",desc:"An arctic fox concept with pale armor and luminous eyes.",kind:"fox",color:0xb5c6dc},
+{name:"EMBER",type:"FIRE LIZARD",desc:"A volcanic-inspired creature with glowing details.",kind:"fox",color:0xa95a43},
+{name:"SHADOW",type:"NIGHT CAT",desc:"A quiet dark companion with a mysterious appearance.",kind:"fox",color:0x34303f},
+{name:"TITAN",type:"IRON BEAR",desc:"A strong companion with a heavy armored appearance.",kind:"bear",color:0x81728c},
+{name:"NOVA",type:"STAR OWL",desc:"A cosmic-inspired flying companion with glowing eyes.",kind:"bird",color:0x7861a7},
+{name:"DRIFT",type:"DESERT JACKAL",desc:"A desert-colored companion built for the Legends City environment.",kind:"wolf",color:0xb78c59},
+{name:"PEARL",type:"OCEAN TURTLE",desc:"A marine-inspired companion with a protective shell.",kind:"turtle",color:0x58a7a0},
+{name:"SPARK",type:"ENERGY RABBIT",desc:"A quick-looking companion with luminous energy details.",kind:"rabbit",color:0x8d70bd},
+{name:"RAVEN",type:"DARK RAVEN",desc:"A mysterious dark-winged companion.",kind:"bird",color:0x34303f},
+{name:"MOSS",type:"FOREST FOX",desc:"A woodland-inspired companion with earthy colors.",kind:"fox",color:0x64865d}
+];
+
+function buildPet(pet){
+while(petGroup.children.length){
+const old=petGroup.children[0];
+petGroup.remove(old);
+old.traverse(obj=>{
+if(obj.geometry)obj.geometry.dispose();
+});
+}
+
+let model;
+switch(pet.kind){
+case "bird":model=makeBird(pet.color);break;
+case "turtle":model=makeTurtle(pet.color);break;
+case "rabbit":model=makeRabbit(pet.color);break;
+case "bear":model=makeBear(pet.color);break;
+case "fox":model=makeFox(pet.color);break;
+default:model=makeWolf(pet.color);
+}
+petGroup.add(model);
+}
+
+function renderPetList(){
+document.getElementById('petList').innerHTML=pets.map((pet,i)=>`
+<button class="pet-option ${i===0?'active':''}" data-index="${i}">
+<span>${['🐺','🦅','🦊','🦎','🐈','🐻','🦉','🐺','🐢','🐇','🐦','🦊'][i]}</span>
+<strong>${pet.name}</strong>
+</button>
+`).join('');
+
+document.querySelectorAll('.pet-option').forEach(button=>{
+button.addEventListener('click',()=>{
+selectPet(Number(button.dataset.index));
+});
+});
+}
+
+function selectPet(index){
+const pet=pets[index];
+document.getElementById('petName').textContent=pet.name;
+document.getElementById('petType').textContent=pet.type;
+document.getElementById('petDescription').textContent=pet.desc;
+
+document.querySelectorAll('.pet-option').forEach((button,i)=>{
+button.classList.toggle('active',i===index);
+});
+
+buildPet(pet);
+resetView();
+}
+
+let rotationY=-0.5;
+let rotationX=0;
+let dragging=false;
+let lastX=0;
+let lastY=0;
+let autoRotate=false;
+let zoom=1;
+
+function resetView(){
+rotationY=-0.5;
+rotationX=0;
+zoom=1;
+camera.position.set(4,3,6);
+camera.lookAt(0,0.65,0);
+}
+
+function toggleRotation(){
+autoRotate=!autoRotate;
+document.getElementById('rotateButton').textContent=
+'AUTO ROTATE: '+(autoRotate?'ON':'OFF');
+}
+
+window.resetView=resetView;
+window.toggleRotation=toggleRotation;
+
+renderer.domElement.addEventListener('pointerdown',event=>{
+dragging=true;
+lastX=event.clientX;
+lastY=event.clientY;
+renderer.domElement.setPointerCapture(event.pointerId);
+});
+
+renderer.domElement.addEventListener('pointermove',event=>{
+if(!dragging)return;
+rotationY+=(event.clientX-lastX)*0.009;
+rotationX+=(event.clientY-lastY)*0.006;
+rotationX=Math.max(-0.7,Math.min(0.7,rotationX));
+lastX=event.clientX;
+lastY=event.clientY;
+});
+
+renderer.domElement.addEventListener('pointerup',()=>dragging=false);
+renderer.domElement.addEventListener('pointercancel',()=>dragging=false);
+
+renderer.domElement.addEventListener('wheel',event=>{
+zoom=Math.max(0.65,Math.min(1.5,zoom-event.deltaY*0.001));
+},{passive:true});
+
+let pinchDistance=0;
+renderer.domElement.addEventListener('touchmove',event=>{
+if(event.touches.length!==2)return;
+const dx=event.touches[0].clientX-event.touches[1].clientX;
+const dy=event.touches[0].clientY-event.touches[1].clientY;
+const distance=Math.sqrt(dx*dx+dy*dy);
+if(pinchDistance){
+zoom=Math.max(0.65,Math.min(1.5,zoom+(distance-pinchDistance)*0.004));
+}
+pinchDistance=distance;
+},{passive:true});
+
+renderer.domElement.addEventListener('touchend',()=>pinchDistance=0);
+
+function resize(){
+const width=container.clientWidth;
+const height=container.clientHeight;
+camera.aspect=width/height;
+camera.updateProjectionMatrix();
+renderer.setSize(width,height);
+}
+
+window.addEventListener('resize',resize);
+
+function animate(){
+requestAnimationFrame(animate);
+if(autoRotate&&!dragging)rotationY+=0.004;
+petGroup.rotation.y=rotationY;
+petGroup.rotation.x=rotationX;
+petGroup.scale.setScalar(zoom);
+renderer.render(scene,camera);
+}
+
+renderPetList();
+buildPet(pets[0]);
+animate();
 </script>
 </body>
 </html>
