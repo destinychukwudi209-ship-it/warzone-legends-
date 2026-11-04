@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090711">
+<title>Armory | WARZONE LEGENDS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#090711;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px;background:#171225;border-bottom:1px solid #50346e}
+header a{color:#c99aff;text-decoration:none;font-size:13px}
+h1{font-size:27px;margin-top:18px}
+header p{color:#b8a9c8;font-size:13px;margin-top:8px}
+main{padding:18px}
+.categories{display:flex;gap:8px;overflow-x:auto;margin-bottom:20px}
+.categories button{flex-shrink:0;padding:10px 15px;background:#21172e;color:#d9c5ef;border:1px solid #49345e;border-radius:20px}
+.categories button.active{background:#7541a0;color:white;border-color:#c28aff}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.card{overflow:hidden;background:#191326;border:1px solid #443052;border-radius:13px}
+.art{height:130px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,#4c3764,#151020 75%)}
+.art svg{width:90%;height:95px}
+.info{padding:13px}
+.info h2{font-size:15px}
+.type{color:#c895ff;font-size:10px;letter-spacing:1px;margin:7px 0}
+.info p{font-size:11px;color:#bcb0ca;line-height:1.5;min-height:32px}
+.status{display:inline-block;margin-top:10px;padding:5px 8px;border-radius:5px;background:#30213e;color:#d7b6f6;font-size:10px}
+.note{color:#a99bb8;font-size:11px;line-height:1.5;margin-top:20px}
+</style>
+</head>
+<body>
+<header>
+<a href="lobby.html">← BACK TO LOBBY</a>
+<h1>THE ARMORY</h1>
+<p>Discover the original equipment of the Legends.</p>
+</header>
+
+<main>
+<div class="categories">
+<button class="active" onclick="filterWeapons('ALL',this)">ALL</button>
+<button onclick="filterWeapons('RIFLE',this)">RIFLES</button>
+<button onclick="filterWeapons('PRECISION',this)">PRECISION</button>
+<button onclick="filterWeapons('ENERGY',this)">ENERGY</button>
+<button onclick="filterWeapons('SPECIAL',this)">SPECIAL</button>
+</div>
+
+<div class="grid" id="weaponGrid"></div>
+
+<p class="note">These are original fictional weapon concepts. Detailed 3D models, animations and gameplay systems will be developed separately.</p>
+</main>
+
+<script>
+const weapons=[
+["Vortex-9","RIFLE","Modular battlefield rifle","rifle"],
+["Astra-12","RIFLE","Compact futuristic rifle","rifle"],
+["Titan-6","RIFLE","Heavy support concept","rifle"],
+["Longbow-X","PRECISION","Long-range precision concept","precision"],
+["Horizon-4","PRECISION","Advanced targeting concept","precision"],
+["Pulse-Core","ENERGY","Fictional energy equipment","energy"],
+["Nova Arc","ENERGY","Experimental energy device","energy"],
+["Echo-7","SPECIAL","Compact tactical equipment","special"],
+["Tempest","SPECIAL","Experimental special equipment","special"],
+["Drift-22","RIFLE","Lightweight modular rifle","rifle"]
+];
+
+function weaponArt(){
+return `<svg viewBox="0 0 260 110" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#e0c5ff"/>
+<stop offset=".45" stop-color="#84649e"/>
+<stop offset="1" stop-color="#292033"/>
+</linearGradient>
+</defs>
+<path d="M18 43 L67 43 L80 31 L175 31 L190 39 L245 39 L245 52 L189 52 L177 62 L92 62 L80 53 L18 53 Z" fill="url(#metal)" stroke="#d7b4ff" stroke-width="2"/>
+<path d="M103 62 L132 62 L124 93 L108 93 Z" fill="#42334f" stroke="#a77bd1" stroke-width="2"/>
+<path d="M145 31 L161 17 L179 17 L170 39 Z" fill="#574169" stroke="#c28aff" stroke-width="2"/>
+<path d="M32 43 L65 43 L65 53 L32 53 Z" fill="#2b2036"/>
+<path d="M192 43 L240 43" stroke="#d5adff" stroke-width="3"/>
+<path d="M83 36 L170 36" stroke="#f0dfff" stroke-width="2" opacity=".7"/>
+<circle cx="155" cy="46" r="5" fill="#d8a5ff"/>
+</svg>`;
+}
+
+function renderWeapons(category){
+const filtered=category==="ALL"?weapons:weapons.filter(w=>w[1]===category);
+document.getElementById("weaponGrid").innerHTML=filtered.map(w=>`
+<div class="card">
+<div class="art">${weaponArt()}</div>
+<div class="info">
+<h2>${w[0]}</h2>
+<div class="type">${w[1]}</div>
+<p>${w[2]}</p>
+<span class="status">CONCEPT DESIGN</span>
+</div>
+</div>`).join("");
+}
+
+function filterWeapons(category,button){
+document.querySelectorAll(".categories button").forEach(b=>b.classList.remove("active"));
+button.classList.add("active");
+renderWeapons(category);
+}
+
+renderWeapons("ALL");
+</script>
+</body>
+</html>
