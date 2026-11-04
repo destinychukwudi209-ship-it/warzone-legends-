@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090711">
+<title>Companions | WARZONE LEGENDS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#090711;color:white;font-family:Arial,sans-serif}
+header{padding:20px;background:#171225;border-bottom:1px solid #50346e}
+header a{color:#c99aff;text-decoration:none;font-size:13px}
+h1{font-size:27px;margin-top:18px}
+header p{color:#b8a9c8;font-size:13px;margin-top:8px}
+main{padding:18px;max-width:800px;margin:auto}
+.intro{padding:17px;background:#20162e;border:1px solid #51376b;border-radius:12px;margin-bottom:20px}
+.intro p{font-size:13px;color:#c6b8d4;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.card{overflow:hidden;background:#191326;border:1px solid #443052;border-radius:13px}
+.art{height:145px;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at center,#69428e,#21152f 70%)}
+.art svg{width:115px;height:115px}
+.info{padding:13px}
+.info h2{font-size:16px}
+.type{color:#c895ff;font-size:10px;letter-spacing:1px;margin:7px 0}
+.info p{font-size:11px;color:#bcb0ca;line-height:1.5;min-height:34px}
+.status{display:block;margin-top:10px;color:#d7b6f6;font-size:10px}
+.note{color:#a99bb8;font-size:11px;line-height:1.5;margin-top:20px}
+</style>
+</head>
+<body>
+<header>
+<a href="lobby.html">← BACK TO LOBBY</a>
+<h1>LEGEND COMPANIONS</h1>
+<p>Discover the creatures of the battlefield.</p>
+</header>
+
+<main>
+<div class="intro">
+<p>Every companion will eventually have its own 3D model, personality, animations and special cosmetic effects. These are original companion concepts.</p>
+</div>
+<div class="grid" id="petGrid"></div>
+<p class="note">Companion abilities and gameplay effects are not active yet.</p>
+</main>
+
+<script>
+const pets=[
+["Aero","SKY HAWK","A futuristic aerial companion.","hawk"],
+["Frost","ICE FOX","A mysterious arctic companion.","fox"],
+["Bolt","STORM WOLF","A powerful-looking robotic wolf.","wolf"],
+["Ember","FIRE LIZARD","A glowing volcanic creature.","lizard"],
+["Shadow","NIGHT CAT","A quiet shadow companion.","cat"],
+["Titan","IRON BEAR","A heavily armored companion.","bear"],
+["Nova","STAR OWL","A cosmic-inspired flying companion.","owl"],
+["Drift","DESERT JACKAL","A desert-themed companion.","jackal"],
+["Pearl","OCEAN TURTLE","A marine-inspired companion.","turtle"],
+["Spark","ENERGY RABBIT","A fast futuristic creature.","rabbit"],
+["Raven","DARK RAVEN","A mysterious flying companion.","raven"],
+["Moss","FOREST FOX","A woodland-inspired companion.","forest"]
+];
+
+function animalArt(){
+return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="fur" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#d6b4ff"/>
+<stop offset="1" stop-color="#533575"/>
+</linearGradient>
+</defs>
+<path d="M27 40 L17 10 L43 28 Q60 19 77 28 L103 10 L93 48 Q105 75 83 96 Q60 113 37 96 Q15 75 27 40Z" fill="url(#fur)" stroke="#e4caff" stroke-width="2"/>
+<path d="M25 31 L20 17 L40 33 M95 31 L100 17 L80 33" fill="#38234e"/>
+<path d="M36 58 Q45 50 53 59 M67 59 Q76 50 84 58" stroke="#110c19" stroke-width="5" stroke-linecap="round"/>
+<path d="M53 76 Q60 82 67 76" fill="none" stroke="#21132d" stroke-width="3"/>
+<path d="M60 32 L60 20" stroke="#e3c7ff" stroke-width="3"/>
+<circle cx="60" cy="17" r="5" fill="#c58aff"/>
+<path d="M30 91 L16 106 M90 91 L104 106" stroke="#b58ae0" stroke-width="5" stroke-linecap="round"/>
+</svg>`;
+}
+
+document.getElementById("petGrid").innerHTML=pets.map(p=>`
+<div class="card">
+<div class="art">${animalArt()}</div>
+<div class="info">
+<h2>${p[0]}</h2>
+<div class="type">${p[1]}</div>
+<p>${p[2]}</p>
+<span class="status">3D COMPANION CONCEPT</span>
+</div>
+</div>
+`).join("");
+</script>
+</body>
+</html>
