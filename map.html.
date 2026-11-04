@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090711">
+<title>Legends City | Warzone Legends</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:#090711;color:#fff;
+  font-family:Arial,sans-serif;
+  overflow:hidden;
+}
+header{
+  height:64px;padding:0 17px;
+  display:flex;align-items:center;
+  justify-content:space-between;
+  background:#110d1d;border-bottom:1px solid #302345;
+}
+.logo{font-weight:900;letter-spacing:2px;color:#c49aff}
+.logo span{color:#fff}
+.back{
+  color:#fff;text-decoration:none;
+  background:#261a39;padding:10px 14px;
+  border-radius:9px;font-size:13px;
+}
+.info{
+  position:absolute;z-index:5;top:78px;left:14px;
+  width:min(270px,calc(100% - 28px));
+  padding:16px;background:#100c1deF;
+  border:1px solid #493267;border-radius:14px;
+  pointer-events:none;
+}
+.info small{color:#b98cff;letter-spacing:2px}
+.info h1{font-size:22px;margin:8px 0}
+.info p{font-size:12px;line-height:1.6;color:#c7bfd4}
+#viewer{
+  position:absolute;inset:64px 0 72px;
+  overflow:hidden;touch-action:none;
+}
+#viewer canvas{display:block;width:100%;height:100%}
+.controls{
+  position:absolute;z-index:5;right:14px;top:80px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.controls button,.zones button{
+  color:white;background:#211832;
+  border:1px solid #65458c;border-radius:9px;
+  padding:11px 13px;font-weight:bold;
+}
+.controls button:active,.zones button.active{
+  background:#7542aa;
+}
+.zones{
+  position:absolute;z-index:5;bottom:83px;
+  left:0;right:0;display:flex;gap:8px;
+  overflow-x:auto;padding:10px 13px;
+}
+.zones button{white-space:nowrap;font-size:11px}
+footer{
+  position:absolute;bottom:0;height:72px;
+  width:100%;display:flex;align-items:center;
+  justify-content:space-around;
+  background:#110d1d;border-top:1px solid #302345;
+}
+footer a{color:#b9a9ce;text-decoration:none;font-size:11px}
+footer a.current{color:#d2a8ff}
+@media(max-height:550px){
+ .info{top:72px;padding:9px}
+ .info p{display:none}
+ .zones{bottom:74px}
+ footer{height:62px}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">WARZONE <span>LEGENDS</span></div>
+  <a class="back" href="lobby.html">← LOBBY</a>
+</header>
+
+<section class="info">
+  <small>WORLD MAP / WL-01</small>
+  <h1 id="zoneTitle">LEGENDS CITY</h1>
+  <p id="zoneDescription">
+    Explore the first battlefield. A coastal city surrounded by
+    hills, industrial districts and strategic locations.
+  </p>
+</section>
+
+<div class="controls">
+  <button id="rotateBtn">AUTO ROTATE: ON</button>
+  <button id="resetBtn">RESET VIEW</button>
+  <button id="zoomIn">ZOOM +</button>
+  <button id="zoomOut">ZOOM −</button>
+</div>
+
+<div id="viewer"></div>
+
+<div class="zones" id="zones">
+  <button class="active" data-zone="LEGENDS CITY">LEGENDS CITY</button>
+  <button data-zone="LEGENDS TOWER">LEGENDS TOWER</button>
+  <button data-zone="DOWNTOWN">DOWNTOWN</button>
+  <button data-zone="MILITARY BASE">MILITARY BASE</button>
+  <button data-zone="OCEAN BEACH">OCEAN BEACH</button>
+  <button data-zone="SHOPPING DISTRICT">SHOPPING DISTRICT</button>
+  <button data-zone="POWER PLANT">POWER PLANT</button>
+  <button data-zone="AIRPORT">AIRPORT</button>
+  <button data-zone="GREEN HILLS">GREEN HILLS</button>
+</div>
+
+<footer>
+  <a href="lobby.html">LOBBY</a>
+  <a href="characters.html">CHARACTERS</a>
+  <a href="armory.html">ARMORY</a>
+  <a href="pets.html">PETS</a>
+  <a class="current" href="map.html">MAP</a>
+</footer>
+
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+const container=document.getElementById('viewer');
+
+const scene=new THREE.Scene();
+scene.background=new THREE.Color(0x111321);
+scene.fog=new THREE.Fog(0x111321,75,155);
+
+const camera=new THREE.PerspectiveCamera(
+  48,1,0.1,300
+);
+camera.position.set(48,42,58);
+camera.lookAt(0,0,0);
+
+const renderer=new THREE.WebGLRenderer({
+  antialias:true,alpha:false
+});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xb9caff,0x302b25,2));
+
+const sunlight=new THREE.DirectionalLight(0xffdfb0,3);
+sunlight.position.set(-35,65,30);
+sunlight.castShadow=true;
+sunlight.shadow.mapSize.set(1024,1024);
+sunlight.shadow.camera.left=-75;
+sunlight.shadow.camera.right=75;
+sunlight.shadow.camera.top=75;
+sunlight.shadow.camera.bottom=-75;
+scene.add(sunlight);
+
+const city=new THREE.Group();
+scene.add(city);
+
+function material(color,roughness=0.85){
+ return new THREE.MeshStandardMaterial({color,roughness});
+}
+const grass=material(0x526b42);
+const road=material(0x252a32);
+const concrete=material(0x777d86);
+const water=material(0x164d72,0.35);
+const sand=material(0xc7ad79);
+const buildingColors=[
+  0x55536a,0x77717f,0x414d62,
+  0x6c5666,0x8b817c,0x394454
+].map(c=>material(c));
+
+function box(parent,x,y,z,w,h,d,mat){
+ const mesh=new THREE.Mesh(
+  new THREE.BoxGeometry(w,h,d),mat
+ );
+ mesh.position.set(x,y+h/2,z);
+ mesh.castShadow=true;
+ mesh.receiveShadow=true;
+ parent.add(mesh);
+ return mesh;
+}
+
+function ground(x,z,w,d,mat,y=-0.2){
+ const mesh=new THREE.Mesh(
+  new THREE.BoxGeometry(w,0.4,d),mat
+ );
+ mesh.position.set(x,y,z);
+ mesh.receiveShadow=true;
+ city.add(mesh);
+ return mesh;
+}
+
+// Island terrain
+ground(0,0,120,105,grass);
+ground(0,58,120,22,water);
+ground(0,44,120,7,sand);
+
+// Main roads
+ground(0,5,120,8,road,0.02);
+ground(-20,-5,7,95,road,0.03);
+ground(23,-5,7,95,road,0.03);
+ground(0,-28,105,6,road,0.03);
+
+// Road markings
+const lineMat=material(0xe3d5a0);
+for(let x=-54;x<=54;x+=12){
+ box(city,x,0.24,5,3,0.05,0.22,lineMat);
+}
+for(let z=-47;z<=37;z+=12){
+ box(city,-20,0.24,z,0.22,0.05,3,lineMat);
+ box(city,23,0.24,z,0.22,0.05,3,lineMat);
+}
+
+// Buildings
+function building(x,z,w,h,d,index){
+ const mat=buildingColors[index%buildingColors.length];
+ box(city,x,0.15,z,w,h,d,mat);
+
+ // Rooftop structure
+ box(city,x,0.15+h,z,w*0.35,1.2,d*0.35,
+     material(0x303344));
+
+ // Window strips
+ const windowMat=material(0x8ac6d9,0.4);
+ for(let level=2;level<h-1;level+=3){
+   for(let side=-1;side<=1;side+=2){
+     box(city,x+side*(w/2+0.025),
+       level,z,w*0.045,0.8,d*0.72,windowMat);
+   }
+ }
+}
+
+function district(cx,cz,rows,cols,spacing){
+ for(let r=0;r<rows;r++){
+  for(let c=0;c<cols;c++){
+   const x=cx+(c-(cols-1)/2)*spacing;
+   const z=cz+(r-(rows-1)/2)*spacing;
+   const height=5+Math.random()*12;
+   building(x,z,6+Math.random()*3,height,
+     6+Math.random()*3,r+c);
+  }
+ }
+}
+
+district(-40,-34,3,3,11);
+district(40,-34,3,3,11);
+district(-40,25,2,3,11);
+
+// Downtown skyline
+building(-5,-35,12,25,12,1);
+building(8,-35,10,19,10,2);
+building(1,-19,8,14,8,3);
+building(-9,-20,8,11,8,4);
+
+// Legends Tower
+building(0,-4,12,36,12,2);
+box(city,0,36.5,-4,3,2,3,material(0xb98cff));
+
+// Military base
+ground(-43,8,24,20,concrete,0.05);
+for(let i=0;i<4;i++){
+ box(city,-51+i*5,0.3,5,4,5,4,material(0x46534c));
+}
+box(city,-43,0.3,13,17,5,7,material(0x4b555d));
+
+// Airport
+ground(42,9,25,20,concrete,0.05);
+ground(42,9,5,18,road,0.3);
+box(city,42,0.4,18,16,5,7,material(0x68717c));
+
+// Shopping district
+box(city,37,0.3,-28,17,8,10,material(0x78576b));
+box(city,37,8.3,-28,12,1,7,material(0xb98cff));
+
+// Power plant
+for(let i=0;i<3;i++){
+ box(city,-39,0.3,-36+i*7,7,11,7,material(0x51525d));
+}
+box(city,-39,11.3,-29,4,4,4,material(0x8d6857));
+
+// Hills
+function hill(x,z,radius,height){
+ const mesh=new THREE.Mesh(
+  new THREE.ConeGeometry(radius,height,7),
+  material(0x536c48)
+ );
+ mesh.position.set(x,height/2-0.1,z);
+ mesh.castShadow=true;
+ mesh.receiveShadow=true;
+ city.add(mesh);
+}
+for(let i=0;i<15;i++){
+ hill(-55+Math.random()*110,
+      -48+Math.random()*85,
+      5+Math.random()*8,
+      4+Math.random()*9);
+}
+
+// Trees
+function tree(x,z){
+ const trunk=new THREE.Mesh(
+  new THREE.CylinderGeometry(0.35,0.5,3,7),
+  material(0x60452f)
+ );
+ trunk.position.set(x,1.5,z);
+ trunk.castShadow=true;
+ city.add(trunk);
+
+ const crown=new THREE.Mesh(
+  new THREE.ConeGeometry(2.2,5,7),
+  material(0x315b3e)
+ );
+ crown.position.set(x,5,z);
+ crown.castShadow=true;
+ city.add(crown);
+}
+for(let i=0;i<75;i++){
+ const x=-56+Math.random()*112;
+ const z=-47+Math.random()*85;
+ if(Math.abs(z-5)<7 || Math.abs(x-23)<6 ||
+    Math.abs(x+20)<6)continue;
+ tree(x,z);
+}
+
+// Water surrounds the island
+const ocean=new THREE.Mesh(
+ new THREE.PlaneGeometry(300,300),
+ water
+);
+ocean.rotation.x=-Math.PI/2;
+ocean.position.y=-0.45;
+scene.add(ocean);
+
+// Interaction
+let dragging=false;
+let previousX=0,previousY=0;
+let rotationSpeed=0.002;
+let autoRotate=true;
+let zoom=1;
+
+renderer.domElement.addEventListener('pointerdown',e=>{
+ dragging=true;
+ previousX=e.clientX;
+ previousY=e.clientY;
+ renderer.domElement.setPointerCapture(e.pointerId);
+});
+
+renderer.domElement.addEventListener('pointermove',e=>{
+ if(!dragging)return;
+ const dx=e.clientX-previousX;
+ const dy=e.clientY-previousY;
+ city.rotation.y+=dx*0.006;
+ camera.position.y=Math.max(15,
+   Math.min(85,camera.position.y+dy*0.12));
+ previousX=e.clientX;
+ previousY=e.clientY;
+});
+
+renderer.domElement.addEventListener('pointerup',()=>{
+ dragging=false;
+});
+
+renderer.domElement.addEventListener('wheel',e=>{
+ zoom=Math.max(0.55,Math.min(1.8,zoom+e.deltaY*0.001));
+ camera.position.set(48*zoom,42*zoom,58*zoom);
+ camera.lookAt(0,0,0);
+});
+
+document.getElementById('rotateBtn').onclick=()=>{
+ autoRotate=!autoRotate;
+ document.getElementById('rotateBtn').textContent=
+  'AUTO ROTATE: '+(autoRotate?'ON':'OFF');
+};
+
+document.getElementById('resetBtn').onclick=()=>{
+ city.rotation.set(0,0,0);
+ zoom=1;
+ camera.position.set(48,42,58);
+ camera.lookAt(0,0,0);
+};
+
+document.getElementById('zoomIn').onclick=()=>{
+ zoom=Math.max(0.55,zoom-0.12);
+ camera.position.set(48*zoom,42*zoom,58*zoom);
+ camera.lookAt(0,0,0);
+};
+
+document.getElementById('zoomOut').onclick=()=>{
+ zoom=Math.min(1.8,zoom+0.12);
+ camera.position.set(48*zoom,42*zoom,58*zoom);
+ camera.lookAt(0,0,0);
+};
+
+// Zone information
+const descriptions={
+ 'LEGENDS CITY':'The complete coastal battlefield, surrounded by hills and industrial districts.',
+ 'LEGENDS TOWER':'The tallest landmark in the city, overlooking the surrounding districts.',
+ 'DOWNTOWN':'A dense urban district filled with high-rise buildings and city streets.',
+ 'MILITARY BASE':'A secured military compound with barracks and open ground.',
+ 'OCEAN BEACH':'A sandy coastline beside the open ocean.',
+ 'SHOPPING DISTRICT':'A commercial district with large shopping buildings.',
+ 'POWER PLANT':'An industrial energy facility on the edge of the city.',
+ 'AIRPORT':'An airport district with a runway and terminal.',
+ 'GREEN HILLS':'Elevated green terrain surrounding parts of the city.'
+};
+
+document.querySelectorAll('.zones button').forEach(btn=>{
+ btn.addEventListener('click',()=>{
+  document.querySelectorAll('.zones button').forEach(b=>
+    b.classList.remove('active'));
+  btn.classList.add('active');
+  const name=btn.dataset.zone;
+  document.getElementById('zoneTitle').textContent=name;
+  document.getElementById('zoneDescription').textContent=
+    descriptions[name];
+ });
+});
+
+function resize(){
+ const w=container.clientWidth;
+ const h=container.clientHeight;
+ camera.aspect=w/h;
+ camera.updateProjectionMatrix();
+ renderer.setSize(w,h);
+}
+window.addEventListener('resize',resize);
+resize();
+
+function animate(){
+ requestAnimationFrame(animate);
+ if(autoRotate&&!dragging)city.rotation.y+=rotationSpeed;
+ renderer.render(scene,camera);
+}
+animate();
+</script>
+</body>
+</html>
