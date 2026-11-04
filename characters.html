@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090711">
+<title>Legends | WARZONE LEGENDS</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#090711;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px;background:#171225;border-bottom:1px solid #50346e}
+header a{color:#c99aff;text-decoration:none;font-size:13px}
+h1{font-size:27px;margin-top:18px}
+header p{color:#b8a9c8;font-size:13px;margin-top:8px}
+main{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.card{overflow:hidden;background:#191326;border:1px solid #443052;border-radius:13px}
+.art{height:145px;display:flex;align-items:center;justify-content:center;font-size:65px;background:radial-gradient(circle at center,#69428e,#21152f 70%)}
+.info{padding:13px}
+.info h2{font-size:16px}
+.role{color:#c895ff;font-size:10px;letter-spacing:1px;margin:7px 0}
+.info p{font-size:11px;color:#bcb0ca;line-height:1.5;min-height:34px}
+button{width:100%;margin-top:12px;padding:10px;background:#36214d;border:1px solid #9d65d4;border-radius:7px;color:white;font-weight:bold}
+.note{color:#a99bb8;font-size:11px;line-height:1.5;margin-top:20px}
+</style>
+</head>
+<body>
+<header>
+<a href="lobby.html">← BACK TO LOBBY</a>
+<h1>THE LEGENDS</h1>
+<p>Meet the original warriors of Warzone Legends.</p>
+</header>
+
+<main>
+<div class="grid" id="characters"></div>
+<p class="note">Character artwork, abilities and selection will be developed further. These are original character concepts.</p>
+</main>
+
+<script>
+const legends=[
+["Kenzo","SHADOW HUNTER","Tactical specialist","⚔️"],
+["Luna","NIGHT STAR","Stealth specialist","🌙"],
+["Ryder","FIRESTORM","Battlefield explorer","🔥"],
+["Nova","GOLDEN QUEEN","Team strategist","👑"],
+["Blade","SILENT STRIKE","Precision specialist","🗡️"],
+["Sakura","CRIMSON ROSE","Agile scout","🌸"],
+["Drax","IRON GUARD","Defensive specialist","🛡️"],
+["Raven","ICE PHANTOM","Recon specialist","❄️"],
+["Phoenix","BLAZE RUNNER","Fast-moving scout","🪽"],
+["Maya","WILD SPIRIT","Survival specialist","🌿"],
+["Zorro","DESERT WOLF","Desert explorer","🐺"],
+["Ghost","DARK SPECTRE","Stealth operative","👻"]
+];
+
+document.getElementById("characters").innerHTML=legends.map((c,i)=>`
+<div class="card">
+<div class="art">${c[3]}</div>
+<div class="info">
+<h2>${c[0]}</h2>
+<div class="role">${c[1]}</div>
+<p>${c[2]}</p>
+<button onclick="selectLegend('${c[0]}')">VIEW LEGEND</button>
+</div>
+</div>
+`).join("");
+
+function selectLegend(name){
+alert(name+" selected for preview. Character selection will be connected to the game system later.");
+}
+</script>
+</body>
+</html>
