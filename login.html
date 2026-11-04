@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090711">
+<title>WARZONE LEGENDS | Login</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top,#38205e,#100b1c 55%,#080711);
+  font-family: Arial,sans-serif;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 22px;
+}
+
+.container {
+  width: 100%;
+  max-width: 430px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.symbol {
+  font-size: 48px;
+  color: #a76aff;
+}
+
+h1 {
+  font-size: 29px;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg,#a76aff,#f0ce65);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.logo p {
+  color: #aaa0ba;
+  font-size: 11px;
+  letter-spacing: 4px;
+  margin-top: 8px;
+}
+
+.card {
+  background: linear-gradient(145deg,#1d1530,#100d1b);
+  border: 1px solid #6941a0;
+  border-radius: 17px;
+  padding: 28px 23px;
+  box-shadow: 0 15px 50px #0009;
+}
+
+h2 {
+  font-size: 25px;
+  margin-bottom: 9px;
+}
+
+.subtitle {
+  color: #aaa0ba;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 26px;
+}
+
+.field {
+  margin-bottom: 19px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: #d4c5e9;
+  margin-bottom: 9px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  background: #090711;
+  border: 1px solid #40304f;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: #a76aff;
+}
+
+input::placeholder {
+  color: #746a82;
+}
+
+.password-box {
+  position: relative;
+}
+
+.password-box input {
+  padding-right: 65px;
+}
+
+.toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #bd8cff;
+  background: none;
+  border: none;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.forgot {
+  display: block;
+  text-align: right;
+  color: #bd8cff;
+  font-size: 12px;
+  text-decoration: none;
+  margin: 5px 0 22px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(100deg,#873ee7,#b477ff);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.message {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 7px;
+  background: #352719;
+  color: #ffd88b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.register {
+  text-align: center;
+  color: #aaa0ba;
+  font-size: 13px;
+  margin-top: 24px;
+}
+
+.register a {
+  color: #c18cff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer {
+  text-align: center;
+  color: #716982;
+  font-size: 10px;
+  margin-top: 24px;
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+<header class="logo">
+  <div class="symbol">♛</div>
+  <h1>WARZONE LEGENDS</h1>
+  <p>FIGHT • SURVIVE • WIN</p>
+</header>
+
+<section class="card">
+
+<h2>Welcome Back, Soldier!</h2>
+
+<p class="subtitle">
+  Enter your account details to return to the battlefield.
+</p>
+
+<form id="loginForm">
+
+<div class="field">
+  <label for="email">EMAIL ADDRESS</label>
+  <input
+    id="email"
+    type="email"
+    placeholder="Enter your email address"
+    required>
+</div>
+
+<div class="field">
+  <label for="password">PASSWORD</label>
+
+  <div class="password-box">
+    <input
+      id="password"
+      type="password"
+      placeholder="Enter your password"
+      required>
+
+    <button class="toggle"
+      type="button"
+      onclick="togglePassword()">
+      SHOW
+    </button>
+  </div>
+</div>
+
+<a class="forgot" href="forgot-password.html">
+  Forgot Password?
+</a>
+
+<button class="login-btn" type="submit">
+  LOGIN TO GAME
+</button>
+
+<div class="message" id="message"></div>
+
+</form>
+
+<div class="register">
+  New player?
+  <a href="index.html">CREATE ACCOUNT</a>
+</div>
+
+</section>
+
+<footer class="footer">
+  WARZONE LEGENDS © 2026
+</footer>
+
+</main>
+
+<script>
+function togglePassword() {
+  const password = document.getElementById("password");
+  const button = document.querySelector(".toggle");
+
+  if (password.type === "password") {
+    password.type = "text";
+    button.textContent = "HIDE";
+  } else {
+    password.type = "password";
+    button.textContent = "SHOW";
+  }
+}
+
+document.getElementById("loginForm")
+.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const message = document.getElementById("message");
+
+  message.style.display = "block";
+  message.textContent =
+    "Secure login authentication has not been connected yet.";
+});
+</script>
+
+</body>
+</html>
+  
