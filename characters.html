@@ -5,69 +5,475 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#090711">
-<title>Legends | WARZONE LEGENDS</title>
+<title>Legends | Warzone Legends</title>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#090711;color:#fff;font-family:Arial,sans-serif}
-header{padding:20px;background:#171225;border-bottom:1px solid #50346e}
-header a{color:#c99aff;text-decoration:none;font-size:13px}
-h1{font-size:27px;margin-top:18px}
-header p{color:#b8a9c8;font-size:13px;margin-top:8px}
-main{padding:18px}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.card{overflow:hidden;background:#191326;border:1px solid #443052;border-radius:13px}
-.art{height:145px;display:flex;align-items:center;justify-content:center;font-size:65px;background:radial-gradient(circle at center,#69428e,#21152f 70%)}
-.info{padding:13px}
-.info h2{font-size:16px}
-.role{color:#c895ff;font-size:10px;letter-spacing:1px;margin:7px 0}
-.info p{font-size:11px;color:#bcb0ca;line-height:1.5;min-height:34px}
-button{width:100%;margin-top:12px;padding:10px;background:#36214d;border:1px solid #9d65d4;border-radius:7px;color:white;font-weight:bold}
-.note{color:#a99bb8;font-size:11px;line-height:1.5;margin-top:20px}
+body{
+ background:#090711;color:#fff;
+ font-family:Arial,sans-serif;
+ min-height:100vh;
+}
+header{
+ height:65px;padding:0 17px;
+ display:flex;align-items:center;
+ justify-content:space-between;
+ background:#110d1d;border-bottom:1px solid #302345;
+}
+.logo{font-size:15px;font-weight:900;letter-spacing:2px;color:#c69aff}
+.logo span{color:white}
+.back{
+ color:white;text-decoration:none;
+ background:#261a39;padding:10px 14px;
+ border-radius:9px;font-size:12px;
+}
+main{padding:18px 14px 30px;max-width:1000px;margin:auto}
+.heading small{color:#bd91ff;letter-spacing:3px;font-size:10px}
+.heading h1{font-size:27px;margin:9px 0 5px}
+.heading p{font-size:12px;color:#a99eb9;line-height:1.6}
+.viewer{
+ position:relative;margin-top:18px;
+ height:min(58vh,490px);min-height:300px;
+ background:radial-gradient(ellipse at center,#302047 0%,#171022 48%,#0b0911 100%);
+ border:1px solid #493267;border-radius:17px;
+ overflow:hidden;
+}
+#stage{position:absolute;inset:0}
+#stage canvas{width:100%;height:100%;display:block}
+.viewer-label{
+ position:absolute;top:13px;left:13px;
+ z-index:2;font-size:10px;letter-spacing:2px;
+ color:#d2b3ff;background:#100c1dcc;
+ padding:9px 11px;border-radius:7px;
+ pointer-events:none;
+}
+.status{
+ position:absolute;left:50%;top:50%;
+ transform:translate(-50%,-50%);
+ width:85%;max-width:300px;
+ text-align:center;z-index:3;
+ padding:19px;background:#100c1de8;
+ border:1px solid #604184;border-radius:13px;
+ pointer-events:none;
+}
+.status h2{font-size:16px;margin-bottom:9px}
+.status p{font-size:12px;color:#c4b9d0;line-height:1.6}
+.status.hidden{display:none}
+.viewer-controls{
+ position:absolute;bottom:12px;right:12px;
+ display:flex;gap:7px;z-index:4;
+}
+button{
+ color:white;background:#211832;
+ border:1px solid #65458c;border-radius:8px;
+ padding:10px 12px;font-weight:bold;
+}
+button:active{background:#7542aa}
+.section-title{
+ margin:22px 0 12px;
+ display:flex;align-items:center;justify-content:space-between;
+}
+.section-title h2{font-size:16px}
+.section-title span{font-size:10px;color:#a99eb9}
+.characters{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:9px;
+}
+.character{
+ min-height:88px;text-align:left;
+ padding:12px 9px;border-radius:11px;
+ background:#151020;border:1px solid #30243f;
+}
+.character.active{
+ border-color:#bd8bff;background:#291b3b;
+}
+.character .number{font-size:9px;color:#bd91ff;display:block;margin-bottom:8px}
+.character strong{display:block;font-size:12px}
+.character small{display:block;color:#a99eb9;font-size:9px;margin-top:5px}
+.details{
+ margin-top:17px;padding:17px;
+ border:1px solid #38274d;border-radius:13px;
+ background:#120e1c;
+}
+.details small{font-size:10px;color:#bd91ff;letter-spacing:2px}
+.details h2{font-size:23px;margin:8px 0}
+.details p{font-size:12px;line-height:1.7;color:#c0b6ce}
+.ability{
+ display:inline-block;margin-top:12px;
+ padding:8px 11px;background:#281b3a;
+ border:1px solid #594071;border-radius:8px;
+ font-size:11px;color:#d6baff;
+}
+footer{
+ margin-top:25px;padding:18px 8px;
+ display:flex;justify-content:space-around;
+ border-top:1px solid #302345;
+}
+footer a{font-size:10px;color:#b9a9ce;text-decoration:none}
+footer a.current{color:#d2a8ff}
+@media(min-width:650px){
+ .characters{grid-template-columns:repeat(4,1fr)}
+ main{padding-top:27px}
+}
 </style>
 </head>
+
 <body>
 <header>
-<a href="lobby.html">← BACK TO LOBBY</a>
-<h1>THE LEGENDS</h1>
-<p>Meet the original warriors of Warzone Legends.</p>
+ <div class="logo">WARZONE <span>LEGENDS</span></div>
+ <a class="back" href="lobby.html">← LOBBY</a>
 </header>
 
 <main>
-<div class="grid" id="characters"></div>
-<p class="note">Character artwork, abilities and selection will be developed further. These are original character concepts.</p>
+ <section class="heading">
+  <small>THE LEGENDS COLLECTION</small>
+  <h1>CHOOSE YOUR LEGEND</h1>
+  <p>Select a character to view their information and load their 3D model.</p>
+ </section>
+
+ <section class="viewer">
+  <div id="stage"></div>
+  <div class="viewer-label">3D CHARACTER VIEWER</div>
+
+  <div class="status" id="status">
+   <h2 id="statusTitle">MODEL NOT INSTALLED</h2>
+   <p id="statusText">
+    The selected character's GLB model will appear here once its
+    model file has been added to the project.
+   </p>
+  </div>
+
+  <div class="viewer-controls">
+   <button id="reset">RESET VIEW</button>
+   <button id="rotate">AUTO ROTATE: ON</button>
+  </div>
+ </section>
+
+ <div class="section-title">
+  <h2>CHARACTER ROSTER</h2>
+  <span>12 ORIGINAL LEGENDS</span>
+ </div>
+
+ <section class="characters" id="characterList"></section>
+
+ <section class="details">
+  <small>SELECTED LEGEND</small>
+  <h2 id="characterName">KENZO</h2>
+  <p id="characterDescription">
+   A skilled explorer known for his calm approach and sharp instincts.
+  </p>
+  <div class="ability" id="characterAbility">SPECIALITY: SHADOW TRACKING</div>
+ </section>
 </main>
 
-<script>
-const legends=[
-["Kenzo","SHADOW HUNTER","Tactical specialist","⚔️"],
-["Luna","NIGHT STAR","Stealth specialist","🌙"],
-["Ryder","FIRESTORM","Battlefield explorer","🔥"],
-["Nova","GOLDEN QUEEN","Team strategist","👑"],
-["Blade","SILENT STRIKE","Precision specialist","🗡️"],
-["Sakura","CRIMSON ROSE","Agile scout","🌸"],
-["Drax","IRON GUARD","Defensive specialist","🛡️"],
-["Raven","ICE PHANTOM","Recon specialist","❄️"],
-["Phoenix","BLAZE RUNNER","Fast-moving scout","🪽"],
-["Maya","WILD SPIRIT","Survival specialist","🌿"],
-["Zorro","DESERT WOLF","Desert explorer","🐺"],
-["Ghost","DARK SPECTRE","Stealth operative","👻"]
+<footer>
+ <a href="lobby.html">LOBBY</a>
+ <a class="current" href="characters.html">CHARACTERS</a>
+ <a href="armory.html">ARMORY</a>
+ <a href="pets.html">PETS</a>
+ <a href="map.html">MAP</a>
+</footer>
+
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+
+import {GLTFLoader} from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+
+import {OrbitControls} from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+const characters=[
+ {
+  name:"KENZO",title:"SHADOW HUNTER",
+  file:"kenzo.glb",
+  description:"A skilled explorer known for his calm approach, sharp instincts and tactical awareness.",
+  ability:"SPECIALITY: SHADOW TRACKING"
+ },
+ {
+  name:"LUNA",title:"NIGHT STAR",
+  file:"luna.glb",
+  description:"A clever and observant legend with a reputation for navigating difficult environments.",
+  ability:"SPECIALITY: NIGHT VISION"
+ },
+ {
+  name:"RYDER",title:"FIRESTORM",
+  file:"ryder.glb",
+  description:"An energetic adventurer who is always ready to explore unfamiliar territory.",
+  ability:"SPECIALITY: RAPID MOVEMENT"
+ },
+ {
+  name:"NOVA",title:"GOLDEN QUEEN",
+  file:"nova.glb",
+  description:"A confident strategist who brings leadership and determination to every mission.",
+  ability:"SPECIALITY: TEAM COMMAND"
+ },
+ {
+  name:"BLADE",title:"SILENT STRIKE",
+  file:"blade.glb",
+  description:"A focused and disciplined competitor who values precision and patience.",
+  ability:"SPECIALITY: QUIET MOVEMENT"
+ },
+ {
+  name:"SAKURA",title:"CRIMSON ROSE",
+  file:"sakura.glb",
+  description:"A resourceful explorer with a creative mind and a strong sense of teamwork.",
+  ability:"SPECIALITY: QUICK RECOVERY"
+ },
+ {
+  name:"DRAX",title:"IRON GUARD",
+  file:"drax.glb",
+  description:"A dependable protector known for his resilience and strong defensive instincts.",
+  ability:"SPECIALITY: DEFENCE"
+ },
+ {
+  name:"RAVEN",title:"ICE PHANTOM",
+  file:"raven.glb",
+  description:"A mysterious traveller who studies every environment before making a decision.",
+  ability:"SPECIALITY: ENVIRONMENT SCAN"
+ },
+ {
+  name:"PHOENIX",title:"BLAZE RUNNER",
+  file:"phoenix.glb",
+  description:"A determined competitor with a fearless attitude and an adventurous spirit.",
+  ability:"SPECIALITY: QUICK SPRINT"
+ },
+ {
+  name:"MAYA",title:"WILD SPIRIT",
+  file:"maya.glb",
+  description:"A nature-loving explorer with excellent awareness of the surrounding world.",
+  ability:"SPECIALITY: NATURE SENSE"
+ },
+ {
+  name:"ZORRO",title:"DESERT WOLF",
+  file:"zorro.glb",
+  description:"A clever wanderer who knows how to adapt to unfamiliar surroundings.",
+  ability:"SPECIALITY: TERRAIN SENSE"
+ },
+ {
+  name:"GHOST",title:"DARK SPECTRE",
+  file:"ghost.glb",
+  description:"A quiet and thoughtful legend who prefers careful planning and observation.",
+  ability:"SPECIALITY: STEALTH AWARENESS"
+ }
 ];
 
-document.getElementById("characters").innerHTML=legends.map((c,i)=>`
-<div class="card">
-<div class="art">${c[3]}</div>
-<div class="info">
-<h2>${c[0]}</h2>
-<div class="role">${c[1]}</div>
-<p>${c[2]}</p>
-<button onclick="selectLegend('${c[0]}')">VIEW LEGEND</button>
-</div>
-</div>
-`).join("");
+const stage=document.getElementById('stage');
+const statusBox=document.getElementById('status');
+const statusTitle=document.getElementById('statusTitle');
+const statusText=document.getElementById('statusText');
+const list=document.getElementById('characterList');
 
-function selectLegend(name){
-alert(name+" selected for preview. Character selection will be connected to the game system later.");
+const scene=new THREE.Scene();
+scene.background=null;
+
+const camera=new THREE.PerspectiveCamera(35,1,0.1,100);
+camera.position.set(0,2.2,7);
+
+const renderer=new THREE.WebGLRenderer({
+ alpha:true,antialias:true
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.shadowMap.enabled=true;
+stage.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xe0d1ff,0x292033,2));
+
+const keyLight=new THREE.DirectionalLight(0xffffff,3);
+keyLight.position.set(4,7,5);
+keyLight.castShadow=true;
+scene.add(keyLight);
+
+const rimLight=new THREE.DirectionalLight(0x9a5bff,2);
+rimLight.position.set(-5,3,-4);
+scene.add(rimLight);
+
+const floor=new THREE.Mesh(
+ new THREE.CircleGeometry(2.2,64),
+ new THREE.MeshStandardMaterial({
+  color:0x352344,roughness:0.75
+ })
+);
+floor.rotation.x=-Math.PI/2;
+floor.position.y=-0.02;
+scene.add(floor);
+
+const ring=new THREE.Mesh(
+ new THREE.TorusGeometry(1.65,0.025,12,80),
+ new THREE.MeshBasicMaterial({color:0xa56bff})
+);
+ring.rotation.x=-Math.PI/2;
+ring.position.y=0.02;
+scene.add(ring);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.target.set(0,1.1,0);
+controls.enableDamping=true;
+controls.enablePan=false;
+controls.minDistance=2.5;
+controls.maxDistance=10;
+controls.maxPolarAngle=Math.PI/1.85;
+
+const loader=new GLTFLoader();
+let currentModel=null;
+let mixer=null;
+let selectedIndex=0;
+let autoRotate=true;
+let loadingToken=0;
+const clock=new THREE.Clock();
+
+function showStatus(title,message){
+ statusTitle.textContent=title;
+ statusText.textContent=message;
+ statusBox.classList.remove('hidden');
 }
+
+function hideStatus(){
+ statusBox.classList.add('hidden');
+}
+
+function clearModel(){
+ if(mixer){
+  mixer.stopAllAction();
+  mixer=null;
+ }
+ if(currentModel){
+  scene.remove(currentModel);
+  currentModel.traverse(obj=>{
+   if(obj.isMesh){
+    obj.geometry.dispose();
+    if(Array.isArray(obj.material)){
+     obj.material.forEach(m=>m.dispose());
+    }else if(obj.material){
+     obj.material.dispose();
+    }
+   }
+  });
+  currentModel=null;
+ }
+}
+
+function loadCharacter(index){
+ selectedIndex=index;
+ const character=characters[index];
+ const token=++loadingToken;
+
+ clearModel();
+
+ document.getElementById('characterName').textContent=character.name;
+ document.getElementById('characterDescription').textContent=character.description;
+ document.getElementById('characterAbility').textContent=character.ability;
+
+ document.querySelectorAll('.character').forEach((button,i)=>{
+  button.classList.toggle('active',i===index);
+ });
+
+ showStatus('LOADING MODEL','Looking for '+character.name+' 3D model...');
+
+ loader.load(
+  'assets/characters/'+character.file,
+  gltf=>{
+   if(token!==loadingToken)return;
+
+   currentModel=gltf.scene;
+   const box=new THREE.Box3().setFromObject(currentModel);
+   const size=box.getSize(new THREE.Vector3());
+   const center=box.getCenter(new THREE.Vector3());
+
+   if(!Number.isFinite(size.y)||size.y===0){
+    showStatus('MODEL ERROR','This character model has invalid dimensions.');
+    return;
+   }
+
+   currentModel.position.sub(center);
+
+   // Fit character to the display
+   const scale=3.2/Math.max(size.x,size.y,size.z);
+   currentModel.scale.setScalar(scale);
+   currentModel.position.y=-center.y*scale;
+
+   currentModel.traverse(obj=>{
+    if(obj.isMesh){
+     obj.castShadow=true;
+     obj.receiveShadow=true;
+    }
+   });
+
+   scene.add(currentModel);
+
+   if(gltf.animations&&gltf.animations.length){
+    mixer=new THREE.AnimationMixer(currentModel);
+    const action=mixer.clipAction(gltf.animations[0]);
+    action.play();
+   }
+
+   hideStatus();
+   camera.position.set(0,1.9,6);
+   controls.target.set(0,1.5,0);
+   controls.update();
+  },
+  undefined,
+  error=>{
+   if(token!==loadingToken)return;
+   console.warn('Could not load character model:',error);
+   showStatus(
+    'MODEL NOT INSTALLED',
+    'The file '+character.file+
+    ' has not been added to assets/characters yet. Add the actual GLB file to display this character in 3D.'
+   );
+  }
+ );
+}
+
+characters.forEach((character,index)=>{
+ const button=document.createElement('button');
+ button.className='character'+(index===0?' active':'');
+ button.innerHTML=
+  '<span class="number">LEGEND '+String(index+1).padStart(2,'0')+
+  '</span><strong>'+character.name+
+  '</strong><small>'+character.title+'</small>';
+ button.addEventListener('click',()=>loadCharacter(index));
+ list.appendChild(button);
+});
+
+document.getElementById('reset').addEventListener('click',()=>{
+ camera.position.set(0,2.2,7);
+ controls.target.set(0,1.1,0);
+ controls.update();
+});
+
+document.getElementById('rotate').addEventListener('click',()=>{
+ autoRotate=!autoRotate;
+ document.getElementById('rotate').textContent=
+  'AUTO ROTATE: '+(autoRotate?'ON':'OFF');
+});
+
+function resize(){
+ const width=stage.clientWidth;
+ const height=stage.clientHeight;
+ camera.aspect=width/height;
+ camera.updateProjectionMatrix();
+ renderer.setSize(width,height);
+}
+
+window.addEventListener('resize',resize);
+resize();
+
+function animate(){
+ requestAnimationFrame(animate);
+ const delta=clock.getDelta();
+ if(mixer)mixer.update(delta);
+ if(autoRotate&&currentModel){
+  currentModel.rotation.y+=delta*0.35;
+ }
+ controls.update();
+ renderer.render(scene,camera);
+}
+animate();
+
+loadCharacter(0);
 </script>
 </body>
 </html>
+
