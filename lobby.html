@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090711">
+  <title>WARZONE LEGENDS | Game Lobby</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #090711;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px;
+      background: #171225;
+      border-bottom: 1px solid #49306b;
+    }
+
+    .logo {
+      color: #c28aff;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .player {
+      text-align: right;
+      font-size: 12px;
+      color: #c9bddc;
+    }
+
+    .player strong {
+      display: block;
+      color: white;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .hero {
+      min-height: 330px;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background:
+        linear-gradient(0deg, #090711 0%, rgba(9,7,17,.25) 100%),
+        radial-gradient(ellipse at 50% 35%, #68419a 0%, #251637 40%, #100c1b 75%);
+      border-bottom: 1px solid #49306b;
+    }
+
+    .hero-label {
+      color: #d5aaff;
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 8vw, 48px);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      max-width: 420px;
+      color: #d0c5dc;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .section {
+      padding: 22px 18px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      margin-bottom: 14px;
+    }
+
+    .mode-card {
+      padding: 18px;
+      background: linear-gradient(120deg, #241638, #151020);
+      border: 1px solid #65428c;
+      border-radius: 14px;
+    }
+
+    .mode-card h3 {
+      font-size: 19px;
+      margin-bottom: 7px;
+    }
+
+    .mode-card p {
+      color: #c3b5d2;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .mode-tag {
+      display: inline-block;
+      color: #e0c4ff;
+      background: #422568;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      margin-bottom: 12px;
+    }
+
+    .start-button {
+      width: 100%;
+      margin-top: 17px;
+      padding: 16px;
+      border: 0;
+      border-radius: 9px;
+      color: #160d20;
+      background: linear-gradient(90deg, #d8a5ff, #a86bff);
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .feature {
+      min-height: 105px;
+      padding: 17px;
+      border-radius: 12px;
+      background: #171225;
+      border: 1px solid #342447;
+      color: white;
+      text-decoration: none;
+    }
+
+    .feature span {
+      display: block;
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .feature strong {
+      font-size: 14px;
+    }
+
+    .feature small {
+      display: block;
+      color: #aa9bbd;
+      margin-top: 5px;
+      font-size: 11px;
+    }
+
+    .map-card {
+      padding: 20px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #193b3b, #172438, #251638);
+      border: 1px solid #45616a;
+    }
+
+    .map-card h3 {
+      font-size: 20px;
+      margin-bottom: 7px;
+    }
+
+    .map-card p {
+      color: #c8d4d6;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      padding: 16px 5px;
+      background: #171225;
+      border-top: 1px solid #49306b;
+      position: sticky;
+      bottom: 0;
+    }
+
+    .bottom-nav a {
+      color: #c7b6da;
+      text-decoration: none;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .bottom-nav a span {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .notice {
+      color: #a99bb8;
+      font-size: 11px;
+      line-height: 1.5;
+      padding: 0 18px 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="logo">WARZONE LEGENDS</div>
+    <div class="player">
+      <strong>LEGEND PLAYER</strong>
+      LEVEL 1 · BRONZE I
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-label">YOUR BATTLE BEGINS HERE</div>
+      <h1>RISE OF THE<br>LEGENDS</h1>
+      <p>Enter a world of strategy, exploration and survival. Build your legend on the battlefield.</p>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Battle Mode</h2>
+      <div class="mode-card">
+        <span class="mode-tag">MAIN MODE</span>
+        <h3>Battle Royale</h3>
+        <p>Explore the battlefield, collect equipment and compete to become the last legend standing.</p>
+        <button class="start-button" onclick="showComingSoon()">START MATCH</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Explore the Game</h2>
+      <div class="features">
+        <a class="feature" href="profile.html">
+          <span>👤</span>
+          <strong>My Profile</strong>
+          <small>Player information</small>
+        </a>
+
+        <a class="feature" href="characters.html">
+          <span>🛡️</span>
+          <strong>Characters</strong>
+          <small>Meet the legends</small>
+        </a>
+
+        <a class="feature" href="armory.html">
+          <span>⚔️</span>
+          <strong>Armory</strong>
+          <small>Explore equipment</small>
+        </a>
+
+        <a class="feature" href="pets.html">
+          <span>🐾</span>
+          <strong>Companions</strong>
+          <small>Discover pets</small>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Featured Battlefield</h2>
+      <div class="map-card">
+        <h3>LEGENDS CITY</h3>
+        <p>Explore the city, military base, airport, coastline and other locations across our planned original battlefield.</p>
+      </div>
+    </section>
+
+    <p class="notice">
+      WARZONE LEGENDS is an original game project. Online matchmaking, actual battles and player accounts will require further development.
+    </p>
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="lobby.html"><span>🏠</span>Lobby</a>
+    <a href="characters.html"><span>🛡️</span>Legends</a>
+    <a href="armory.html"><span>⚔️</span>Armory</a>
+    <a href="profile.html"><span>👤</span>Profile</a>
+  </nav>
+
+  <script>
+    function showComingSoon() {
+      alert("Battle Royale is currently under development. The game engine and matchmaking will be added in a later stage.");
+    }
+  </script>
+</body>
+                                   </html>
+                                   
