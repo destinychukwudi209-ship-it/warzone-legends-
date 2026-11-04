@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WARZONE LEGENDS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #080d12;
+      color: white;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 22px;
+      background: #111c25;
+      border-bottom: 2px solid #b5a044;
+      text-align: center;
+    }
+
+    header h1 {
+      color: #e9c75b;
+      letter-spacing: 3px;
+      font-size: 27px;
+    }
+
+    header p {
+      color: #aab5bd;
+      margin-top: 7px;
+      font-size: 11px;
+      letter-spacing: 3px;
+    }
+
+    .lobby {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 25px;
+      text-align: center;
+      background:
+        linear-gradient(#07111b99, #07111bdd),
+        radial-gradient(ellipse at center, #405d42, #101b21 75%);
+    }
+
+    .character {
+      width: 150px;
+      height: 220px;
+      border-radius: 80px 80px 25px 25px;
+      background: linear-gradient(135deg, #66766c, #192b29);
+      border: 2px solid #d5b64d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 85px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 35px #b59b3744;
+    }
+
+    .lobby h2 {
+      font-size: 25px;
+      letter-spacing: 2px;
+    }
+
+    .lobby p {
+      color: #b6c1c7;
+      margin: 12px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #e5c45d, #a47c24);
+      color: #111;
+      border: none;
+      padding: 17px 55px;
+      margin-top: 22px;
+      font-size: 17px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .status {
+      color: #a7b4bb;
+      margin-top: 18px;
+      font-size: 12px;
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      color: #78848b;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>WARZONE LEGENDS</h1>
+    <p>ENTER THE BATTLEFIELD</p>
+  </header>
+
+  <main class="lobby">
+    <div class="character">🪖</div>
+
+    <h2>WELCOME, SOLDIER</h2>
+    <p>Your battlefield awaits.</p>
+
+    <button onclick="startGame()">START GAME</button>
+
+    <div class="status" id="status">
+      SYSTEM STATUS: READY
+    </div>
+  </main>
+
+  <footer>
+    WARZONE LEGENDS © 2026
+  </footer>
+
+  <script>
+    function startGame() {
+      document.getElementById("status").textContent =
+        "PREPARING BATTLEFIELD...";
+
+      alert("Welcome to WARZONE LEGENDS!");
+    }
+  </script>
+
+</body>
+  </html>
+  
