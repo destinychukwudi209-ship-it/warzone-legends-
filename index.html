@@ -3,8 +3,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>WARZONE LEGENDS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090711">
+<title>WARZONE LEGENDS | Register</title>
 
 <style>
 * {
@@ -14,122 +15,295 @@
 }
 
 body {
-  background: #101b18;
-  color: white;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top, #38205e 0%, #100b1c 48%, #080711 100%);
   font-family: Arial, sans-serif;
-  overflow: hidden;
-}
-
-#lobby {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  background: linear-gradient(135deg,#101d19,#253c2b);
+  color: white;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  padding: 22px;
+}
+
+.container {
+  width: 100%;
+  max-width: 430px;
+}
+
+.logo {
   text-align: center;
+  margin-bottom: 25px;
 }
 
-h1 {
-  color: #e8c65c;
-  font-size: 30px;
-  letter-spacing: 3px;
-  margin-bottom: 15px;
+.logo .symbol {
+  font-size: 48px;
+  color: #a76aff;
 }
 
-#lobby p {
-  color: #b8c7bc;
-  margin: 12px;
+.logo h1 {
+  font-size: 29px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg,#a76aff,#f0ce65);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-button {
-  border: none;
-  background: linear-gradient(135deg,#f0d36a,#a27b27);
-  color: #101010;
-  padding: 15px 35px;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-  touch-action: none;
-}
-
-#gameMessage {
-  position: fixed;
-  top: 15px;
-  left: 15px;
-  z-index: 2;
-  font-size: 12px;
-  color: white;
-}
-
-#gameControls {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.pad {
-  position: absolute;
-  bottom: 35px;
-  left: 20px;
-  display: grid;
-  grid-template-columns: 55px 55px 55px;
-  grid-template-rows: 55px 55px;
-  gap: 5px;
-  pointer-events: auto;
-}
-
-.pad button {
-  padding: 0;
-  font-size: 22px;
-  background: #17251dcc;
-  color: white;
-  border: 1px solid #e8c65c;
-}
-
-#up { grid-column: 2; }
-#left { grid-column: 1; grid-row: 2; }
-#down { grid-column: 2; grid-row: 2; }
-#right { grid-column: 3; grid-row: 2; }
-
-#hint {
-  position: absolute;
-  right: 15px;
-  bottom: 40px;
-  color: white;
+.logo p {
+  color: #aaa0ba;
   font-size: 11px;
-  text-align: right;
+  letter-spacing: 4px;
+  margin-top: 8px;
+}
+
+.register-card {
+  background: linear-gradient(145deg,#1d1530,#100d1b);
+  border: 1px solid #6941a0;
+  border-radius: 17px;
+  padding: 27px 22px;
+  box-shadow: 0 15px 50px #0009;
+}
+
+.register-card h2 {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: #aaa0ba;
+  font-size: 13px;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.field {
+  margin-bottom: 17px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  color: #d4c5e9;
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  background: #090711;
+  color: white;
+  border: 1px solid #40304f;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+}
+
+input:focus {
+  border-color: #a76aff;
+  box-shadow: 0 0 10px #a76aff33;
+}
+
+input::placeholder {
+  color: #746a82;
+}
+
+.terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #b9afc7;
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 20px 0;
+}
+
+.terms input {
+  width: 16px;
+  margin-top: 2px;
+  accent-color: #a76aff;
+}
+
+.create-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(100deg,#873ee7,#b477ff);
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.create-btn:active {
+  transform: scale(.98);
+}
+
+.login {
+  text-align: center;
+  margin-top: 23px;
+  font-size: 13px;
+  color: #aaa0ba;
+}
+
+.login a {
+  color: #c18cff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.message {
+  display: none;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 7px;
+  background: #352719;
+  color: #ffd88b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.footer {
+  text-align: center;
+  color: #716982;
+  font-size: 10px;
+  margin-top: 23px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="lobby">
-  <h1>WARZONE LEGENDS</h1>
-  <p>3D BATTLEFIELD</p>
-  <p>YOUR MISSION STARTS HERE</p>
-  <button onclick="startGame()">ENTER BATTLEFIELD</button>
-</div>
+<main class="container">
 
-<div id="gameMessage">WARZONE LEGENDS | READY</div>
+  <header class="logo">
+    <div class="symbol">♛</div>
+    <h1>WARZONE LEGENDS</h1>
+    <p>FIGHT • SURVIVE • WIN</p>
+  </header>
 
-<div id="gameControls">
-  <div class="pad">
-    <button id="up">▲</button>
-    <button id="left">◀</button>
-    <button id="down">▼</button>
-    <button id="right">▶</button>
-  </div>
-  <div id="hint">MOVE: WASD<br>OR USE THE DIRECTION PAD</div>
-</div>
+  <section class="register-card">
 
-<script type="module" src="./game.js"></script>
+    <h2>Create Your Account</h2>
+
+    <p class="subtitle">
+      Join the battlefield and begin your journey.
+      Create your player identity below.
+    </p>
+
+    <form id="registerForm">
+
+      <div class="field">
+        <label for="username">PLAYER USERNAME</label>
+        <input id="username"
+          type="text"
+          placeholder="Choose your username"
+          minlength="3"
+          maxlength="20"
+          required>
+      </div>
+
+      <div class="field">
+        <label for="email">EMAIL ADDRESS</label>
+        <input id="email"
+          type="email"
+          placeholder="Enter your email"
+          required>
+      </div>
+
+      <div class="field">
+        <label for="password">PASSWORD</label>
+        <input id="password"
+          type="password"
+          placeholder="Create a password"
+          minlength="8"
+          required>
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">CONFIRM PASSWORD</label>
+        <input id="confirmPassword"
+          type="password"
+          placeholder="Enter password again"
+          required>
+      </div>
+
+      <label class="terms">
+        <input type="checkbox" id="terms" required>
+        <span>I agree to the game's Terms of Service and Privacy Policy.</span>
+      </label>
+
+      <button class="create-btn" type="submit">
+        CREATE ACCOUNT
+      </button>
+
+      <div class="message" id="message"></div>
+
+    </form>
+
+    <div class="login">
+      Already have an account?
+      <a href="login.html">LOGIN</a>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    WARZONE LEGENDS © 2026
+  </footer>
+
+</main>
+
+<script>
+document.getElementById("registerForm")
+.addEventListener("submit", function(event) {
+
+  event.preventDefault();
+
+  const username =
+    document.getElementById("username").value.trim();
+
+  const email =
+    document.getElementById("email").value.trim();
+
+  const password =
+    document.getElementById("password").value;
+
+  const confirmPassword =
+    document.getElementById("confirmPassword").value;
+
+  const message =
+    document.getElementById("message");
+
+  message.style.display = "block";
+
+  if (username.length < 3) {
+    message.textContent = "Username must have at least 3 characters.";
+    return;
+  }
+
+  if (password.length < 8) {
+    message.textContent = "Password must have at least 8 characters.";
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    message.textContent = "Your passwords do not match.";
+    return;
+  }
+
+  if (!document.getElementById("terms").checked) {
+    message.textContent = "Please accept the terms first.";
+    return;
+  }
+
+  message.textContent =
+    "Registration interface ready. Secure account authentication must be connected before accounts can be created.";
+
+});
+</script>
 
 </body>
 </html>
