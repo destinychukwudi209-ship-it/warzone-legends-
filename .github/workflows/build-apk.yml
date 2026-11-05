@@ -1,46 +1,51 @@
-
 name: Build Warzone Legends APK
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get game files
+      - name: Checkout project
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Set up Java
+      - name: Setup Java
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
 
-      - name: Set up Android SDK
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v4
         with:
           accept-android-sdk-licenses: true
 
-      - name: Prepare game
+      - name: Prepare game files
         run: |
           mkdir -p www
-          cp *.html *.js *.css www/ 2>/dev/null || true
-          if [ -d assets ]; then cp -R assets www/; fi
-          npm init -y
-          npm install @capacitor/core@7 @capacitor/cli@7 @capacitor/android@7
+          cp -f *.html *.js *.css www/ 2>/dev/null || true
+          if [ -d assets ]; then
+            cp -R assets www/assets
+          fi
 
-      - name: Configure Android app
+      - name: Create Capacitor project
         run: |
+          npm init -y
+          npm install @capacitor/core@7 @capacitor/android@7
+          npm install --save-dev @capacitor/cli@7
+
           cat > capacitor.config.json <<'EOF'
           {
             "appId": "com.warzonelegends.game",
@@ -48,8 +53,29 @@ jobs:
             "webDir": "www"
           }
           EOF
+
           npx cap add android
           npx cap sync android
+
+      - name: Enable automatic screen rotation
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          path = "android/app/src/main/AndroidManifest.xml"
+          ET.register_namespace("android", "http://schemas.android.com/apk/res/android")
+          tree = ET.parse(path)
+          root = tree.getroot()
+          ns = "{http://schemas.android.com/apk/res/android}"
+
+          for activity in root.findall(".//activity"):
+              name = activity.get(ns + "name", "")
+              if name.endswith("MainActivity"):
+                  activity.set(ns + "screenOrientation", "fullSensor")
+                  break
+
+          tree.write(path, encoding="utf-8", xml_declaration=True)
+          PY
 
       - name: Build APK
         run: |
@@ -57,9 +83,9 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      - name: Save APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Warzone-Legends-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
-          
+          retention-days: 7
